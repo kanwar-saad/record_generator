@@ -1,0 +1,16 @@
+{"conf": 
+    {
+        "output_type" : "file",
+        "output_destination" : "out_records.csv",
+        "output_format" : "CSV",
+        "metadata_info" : 
+        {
+            "http" : 
+            {
+                "output_rate" : 100,
+                "number_of_records" : 600,
+                "schema_path" : "../schema/http.sch"
+            }
+        }
+    }
+}
