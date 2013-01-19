@@ -1,4 +1,5 @@
-import sys, json
+import sys
+import simplejson as json
 from pprint import pprint
 import globals
 from schema import *
@@ -82,6 +83,9 @@ def main(argv=None):
         print "Error validating schema files ... Exiting"
         return
 
+    if not schema_post_process():
+        print "Error in Post Processing Schema ... Exiting"
+        return
 
 if __name__ == "__main__":
     main(sys.argv[1:])

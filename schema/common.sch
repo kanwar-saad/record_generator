@@ -1,4 +1,5 @@
-{ "fields" : {
+{   "name" : "Common Fields",
+    "fields" : {
     "TFP_<Application>_APN" :
 	{
 		"name" : "TFP_<Application>_APN",
@@ -65,7 +66,7 @@
     "TFP_<Application>_GGSN_Address_For_User_Traffic" :
 	{
 		"name" : "TFP_<Application>_GGSN_Address_For_User_Traffic",
-		"type" : "IPADDR(16)",
+		"type" : "IPADDR",
 		"Explanation" : "IP address of GGSN interface which is monitored  ",
 		"Values" : "Correlated. IPv4 or IPv6 address.  "
 	},
@@ -100,35 +101,35 @@
     "TFP_<Application>_Messaging_End_Time_Local_Date" :
 	{
 		"name" : "TFP_<Application>_Messaging_End_Time_Local_Date",
-		"type" : "BCDDATE",
+		"type" : "BCDTIMESTAMP",
 		"Explanation" : "Local time and date in BCDTIMESTAMP format. Last packet in connec   tion.  ",
 		"Values" : "Date  "
 	},
     "TFP_<Application>_Messaging_End_Time_Local_Time" :
 	{
 		"name" : "TFP_<Application>_Messaging_End_Time_Local_Time",
-		"type" : "BCDTime",
+		"type" : "BCDTIMESTAMP",
 		"Explanation" : "Local time and date in BCDTIMESTAMP format.  ",
 		"Values" : "Time  "
 	},
     "TFP_<Application>_Messaging_Start_Time_Local_Date" :
 	{
 		"name" : "TFP_<Application>_Messaging_Start_Time_Local_Date",
-		"type" : "BCDDATE",
+		"type" : "BCDTIMESTAMP",
 		"Explanation" : "Local time and date in BCDTIMESTAMP format. First packet which ini   tiated the connection.  ",
 		"Values" : "Date  "
 	},
     "TFP_<Application>_Messaging_Start_Time_Local_Time" :
 	{
 		"name" : "TFP_<Application>_Messaging_Start_Time_Local_Time",
-		"type" : "BCDTime",
+		"type" : "BCDTIMESTAMP",
 		"Explanation" : "Local time and date in BCDTIMESTAMP format.  ",
 		"Values" : "Time  "
 	},
     "TFP_<Application>_Mobile_IP_Address" :
 	{
 		"name" : "TFP_<Application>_Mobile_IP_Address",
-		"type" : "IPADDR(16)",
+		"type" : "IPADDR",
 		"Explanation" : "IP address of mobile  ",
 		"Values" : "IPv4 or IPv6 address.  "
 	},
@@ -177,14 +178,14 @@
     "TFP_<Application>_PDP_Context_Activation_Date" :
 	{
 		"name" : "TFP_<Application>_PDP_Context_Activation_Date",
-		"type" : "BCDDATE",
+		"type" : "BCDTIMESTAMP",
 		"Explanation" : "Timestamp (local time) for Activate PDP Context Accept.  ",
 		"Values" : [ ]
 	},
     "TFP_<Application>_PDP_Context_Activation_Time" :
 	{
 		"name" : "TFP_<Application>_PDP_Context_Activation_Time",
-		"type" : "BCDTIME",
+		"type" : "BCDTIMESTAMP",
 		"Explanation" : "Timestamp (local time) for Activate PDP Context Accept.  ",
 		"Values" : [ ]
 	},
@@ -198,7 +199,7 @@
     "TFP_<Application>_RAN_Address_for_User_Traffic" :
 	{
 		"name" : "TFP_<Application>_RAN_Address_for_User_Traffic",
-		"type" : "IPADDR(16)",
+		"type" : "IPADDR",
 		"Explanation" : "RAN address for user traffic in case of direct tunnel.  ",
 		"Values" : "IPv4 or IPv6 address  "
 	},
@@ -219,7 +220,7 @@
     "TFP_<Application>_Report_Date" :
 	{
 		"name" : "TFP_<Application>_Report_Date",
-		"type" : "BCDDATE",
+		"type" : "BCDTIMESTAMP",
 		"Explanation" : "Report sending local time and date in BCDTIMESTAMP format.  ",
 		"Values" : [ ]
 	},
@@ -240,21 +241,21 @@
     "TFP_<Application>_Report_Time" :
 	{
 		"name" : "TFP_<Application>_Report_Time",
-		"type" : "BCDTime",
+		"type" : "BCDTIMESTAMP",
 		"Explanation" : "Report sending local time and date in BCDTIMESTAMP format.  ",
 		"Values" : "Time  "
 	},
     "TFP_<Application>_Report_UTC_Date" :
 	{
 		"name" : "TFP_<Application>_Report_UTC_Date",
-		"type" : "BCDDATE",
+		"type" : "BCDTIMESTAMP",
 		"Explanation" : "Report sending UTC time and date in BCDTIMESTAMP format.  ",
 		"Values" : [ ]
 	},
     "TFP_<Application>_Report_UTC_Time" :
 	{
 		"name" : "TFP_<Application>_Report_UTC_Time",
-		"type" : "BCDTime",
+		"type" : "BCDTIMESTAMP",
 		"Explanation" : "Report sending UTC time and date in BCDTIMESTAMP format.  ",
 		"Values" : "Time  "
 	},
@@ -289,7 +290,7 @@
     "TFP_<Application>_Service_IP_Address" :
 	{
 		"name" : "TFP_<Application>_Service_IP_Address",
-		"type" : "IPADDR(16)",
+		"type" : "IPADDR",
 		"Explanation" : "IP Address for the service (e.g. HTTP server IP)  ",
 		"Values" : "IPv4 or IPv6 address.  "
 	},
@@ -310,7 +311,7 @@
     "TFP_<Application>_SGSN_Address_For_User_Traffic" :
 	{
 		"name" : "TFP_<Application>_SGSN_Address_For_User_Traffic",
-		"type" : "IPADDR(16)",
+		"type" : "IPADDR",
 		"Explanation" : "IP Address for SGSN (from GGSN point of view) used for user traffic  ",
 		"Values" : []
 	},
