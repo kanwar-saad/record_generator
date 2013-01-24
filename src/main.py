@@ -48,6 +48,9 @@ def main(argv=None):
     if not argv or (len(argv)>1):
         usage()
         return
+    
+    print 
+    print
 
     # Check if the conf file exist or not
     conf_file = argv[0]
@@ -127,9 +130,11 @@ def main(argv=None):
 
         # Generate Record
         raw_record = generate_record(sched['schema'])
+        raw_record.insert(0, sched['timestamp'])
+        raw_record.insert(1, sched['schema'])
         # Output Record
         formatted_record = format_record(raw_record)
-        print formatted_record
+        #print formatted_record
         
         if not record_out(formatted_record):
             print "Error in record output ... exiting"

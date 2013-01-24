@@ -55,10 +55,6 @@ class CharField(Field):
 class Uint8Field(Field):
     def __init__(self, *args, **kwds):
         Field.__init__(self, *args, **kwds)
-        if (not self.val_list) and (not self.val_range):
-            print "No values specified for field", self.name
-            raise BaseException()
-
 
     def generate_val(self):
         self.value = None
@@ -68,6 +64,8 @@ class Uint8Field(Field):
         elif self.val_range:
             # assuming ranges are given in int
             self.value = random.randint(self.val_range[0], self.val_range[1])
+        else:
+            self.value = random.randint(0, 255)
 
         if self.value == None:
             print "Warning: No Field Generated in "+self.name
@@ -77,6 +75,81 @@ class Uint8Field(Field):
             return "<None>"
         else:
             return str(self.value)
+
+
+class Uint16Field(Field):
+    def __init__(self, *args, **kwds):
+        Field.__init__(self, *args, **kwds)
+
+    def generate_val(self):
+        self.value = None
+        if self.val_list:
+            # Assuming value list are all int
+            self.value = random.choice(self.val_list)
+        elif self.val_range:
+            # assuming ranges are given in int
+            self.value = random.randint(self.val_range[0], self.val_range[1])
+        else:
+            self.value = random.randint(0, 65535)
+
+        if self.value == None:
+            print "Warning: No Field Generated in "+self.name
+
+    def __str__(self):
+        if not self.value:
+            return "<None>"
+        else:
+            return str(self.value)
+
+class Uint32Field(Field):
+    def __init__(self, *args, **kwds):
+        Field.__init__(self, *args, **kwds)
+
+    def generate_val(self):
+        self.value = None
+        if self.val_list:
+            # Assuming value list are all int
+            self.value = random.choice(self.val_list)
+        elif self.val_range:
+            # assuming ranges are given in int
+            self.value = random.randint(self.val_range[0], self.val_range[1])
+        else:
+            self.value = random.randint(0, 4294967296)
+
+        if self.value == None:
+            print "Warning: No Field Generated in "+self.name
+
+    def __str__(self):
+        if not self.value:
+            return "<None>"
+        else:
+            return str(self.value)
+
+class Uint64Field(Field):
+    def __init__(self, *args, **kwds):
+        Field.__init__(self, *args, **kwds)
+
+    def generate_val(self):
+        self.value = None
+        if self.val_list:
+            # Assuming value list are all int
+            self.value = random.choice(self.val_list)
+        elif self.val_range:
+            # assuming ranges are given in int
+            self.value = random.randint(self.val_range[0], self.val_range[1])
+        else:
+            self.value = random.randint(0, 18446744073709552000)
+
+        if self.value == None:
+            print "Warning: No Field Generated in "+self.name
+
+    def __str__(self):
+        if not self.value:
+            return "<None>"
+        else:
+            return str(self.value)
+
+
 
 def get_field_object(field):
     type = field['type']
@@ -100,11 +173,11 @@ def get_field_object(field):
     elif type == "UINT8":
         ret = Uint8Field(name=field.get('name'), val_list=field.get('values'), val_range=field.get('value_range'))
     elif type == "UINT16":
-        pass
+        ret = Uint16Field(name=field.get('name'), val_list=field.get('values'), val_range=field.get('value_range'))
     elif type == "UINT32":
-        pass
+        ret = Uint32Field(name=field.get('name'), val_list=field.get('values'), val_range=field.get('value_range'))
     elif type == "UINT64":
-        pass
+        ret = Uint64Field(name=field.get('name'), val_list=field.get('values'), val_range=field.get('value_range'))
 
     
     return ret

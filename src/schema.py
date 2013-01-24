@@ -5,7 +5,11 @@ from pprint import pprint
 import globals
 
 def print_schema():
+    print
+    print "Displaying Record Structure :"
+    print
     for schema in globals.edg_schema.values():
+        print "Schema :", schema['name']
         pprint (schema['fields'].keys())
 
 def parse_schema_files():
