@@ -1,0 +1,10 @@
+- Simplae JSON
+
+    sudo pip install simplejson
+
+- ordereddict
+
+    wget http://pypi.python.org/packages/source/o/ordereddict/ordereddict-1.1.tar.gz
+    tar zxvf ordereddict-1.1.tar.gz
+    cd ordereddict-1.1
+    sudo python setup.py install
