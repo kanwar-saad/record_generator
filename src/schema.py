@@ -1,7 +1,6 @@
 import sys, re
 import simplejson as json
 from ordereddict import OrderedDict
-import ordereddict
 from pprint import pprint
 import globals
 
@@ -25,7 +24,7 @@ def parse_schema_files():
         schema_data_json = open(schema_file)
         try:
             str_data = bytearray(schema_data_json.read()).decode('utf-8')
-            globals.edg_schema[key] = json.loads(str_data, object_pairs_hook=ordereddict.OrderedDict)
+            globals.edg_schema[key] = json.loads(str_data, object_pairs_hook=OrderedDict)
             schema_data_json.close()
         except ValueError as e:
             print "Error parsing JSON in schema file : ", schema_file
@@ -146,9 +145,16 @@ def include_schema():
     for schema, value in globals.edg_schema.items()[:]:
         schema_data = OrderedDict()
         schema_files = [globals.edg_conf['conf']['metadata_info'][schema]['schema_path']]
+
+        # Continue to next schema if this schema has no other include files
+        if not value.get('include_schema'):
+            continue
+        # Check for self inclusion
         if list(set(schema_files) & set(value.get('include_schema'))):
             print "Error: Cannot self include schema in %s : schema_include"% schema
             return False
+
+        # Check for duplicate inclusion 
         schema_files = value.get('include_schema')
         if len(list(set(schema_files))) != len(schema_files):
             print "Error: File duplication in %s : schema_include list "% schema

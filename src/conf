@@ -5,12 +5,13 @@
         "output_format" : "CSV",
         "metadata_info" : 
         {
-            "http" : 
+            "test_schema" : 
             {
-                "output_rate" : 100,
-                "number_of_records" : 600,
-                "schema_path" : "../schema/http.sch"
+                "output_rate" : 4,
+                "number_of_records" : 15,
+                "schema_path" : "../schema/test.sch"
             }
+
         }
     }
 }

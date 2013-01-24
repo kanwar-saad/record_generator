@@ -3,6 +3,10 @@ import simplejson as json
 from pprint import pprint
 import globals
 from schema import *
+from schedular import *
+from generator import *
+from format import *
+from output import *
 
 def validate_conf_structure():
     conf = globals.edg_conf
@@ -86,6 +90,59 @@ def main(argv=None):
     if not schema_post_process():
         print "Error in Post Processing Schema ... Exiting"
         return
+
+    
+    # Initialize schedular
+    if not schedular_init():
+        print "Error in Initializing Schedular ... Exiting"
+        return
+
+    # Initialize generator
+    if not generator_init():
+        print "Error in Initializing Generator ... Exiting"
+        return
+    # Initialize generator
+    if not format_init():
+        print "Error in Initializing Formatter ... Exiting"
+        return
+
+    # Initialize generator
+    if not output_init():
+        print "Error in Initializing Output ... Exiting"
+        return
+
+
+
+    print "Initialization Complete"
+    # Start generator loop.
+    count = 0
+    while (True):
+        sched = get_next_schedule()
+
+        #print sched['schema'], sched['timestamp']
+        # Check for termination condition
+        if (sched['schema'] == ''):
+            break
+        count += 1
+
+        # Generate Record
+        raw_record = generate_record(sched['schema'])
+        # Output Record
+        formatted_record = format_record(raw_record)
+        print formatted_record
+        
+        if not record_out(formatted_record):
+            print "Error in record output ... exiting"
+            print "Total records generated = ", count 
+            return
+
+    print "Total records generated = ", count 
+     
+    globals.edg_output.close()
+
+
+
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])

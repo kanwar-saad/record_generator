@@ -5,3 +5,9 @@ edg_schema = {}
 
 edg_field_types_var   = ['BCD', 'BCD8', 'BIN', 'CHAR']
 edg_field_types_const = ['BCDTIMESTAMP', 'IPADDR', 'TIME64', 'UINT8', 'UINT16', 'UINT32', 'UINT64']
+
+edg_gen_fields = {}
+
+edg_formatter = None
+
+edg_output = None
