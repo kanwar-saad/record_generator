@@ -104,12 +104,12 @@ def main(argv=None):
     if not generator_init():
         print "Error in Initializing Generator ... Exiting"
         return
-    # Initialize generator
+    # Initialize formattor
     if not format_init():
         print "Error in Initializing Formatter ... Exiting"
         return
 
-    # Initialize generator
+    # Initialize output
     if not output_init():
         print "Error in Initializing Output ... Exiting"
         return
