@@ -1,4 +1,4 @@
-import sys, random, string
+import sys, random, string, datetime
 import simplejson as json
 from ordereddict import OrderedDict
 from pprint import pprint
@@ -149,27 +149,174 @@ class Uint64Field(Field):
         else:
             return str(self.value)
 
+class BCDField(Field):
+    def __init__(self, size, *args, **kwds):
+        Field.__init__(self, *args, **kwds)
+        self.size = size
+    def generate_val(self):
+        self.value = None
+        if self.val_list:
+            # Assuming value list are all int
+            self.value = random.choice(self.val_list)
+        elif self.val_range:
+            # assuming ranges are given in int
+            self.value = random.randint(self.val_range[0], self.val_range[1])
+        else:
+            self.value = int(''.join(random.choice(string.digits) for x in range(self.size)))
+
+        if self.value == None:
+            print "Warning: No Field Generated in "+self.name
+
+    def __str__(self):
+        if not self.value:
+            return "<None>"
+        else:
+            return str(self.value)
+
+
+class BCD8Field(Field):
+    def __init__(self, size, *args, **kwds):
+        Field.__init__(self, *args, **kwds)
+        self.size = size
+    def generate_val(self):
+        self.value = None
+        if self.val_list:
+            # Assuming value list are all int
+            self.value = random.choice(self.val_list)
+        elif self.val_range:
+            # assuming ranges are given in int
+            self.value = random.randint(self.val_range[0], self.val_range[1])
+        else:
+            self.value = int(''.join(random.choice(string.digits) for x in range(self.size)))
+
+        if self.value == None:
+            print "Warning: No Field Generated in "+self.name
+
+    def __str__(self):
+        if not self.value:
+            return "<None>"
+        else:
+            return str(self.value)
+
+class BCDDateTimeField(Field):
+    def __init__(self, size, *args, **kwds):
+        Field.__init__(self, *args, **kwds)
+    
+    def generate_val(self):
+        self.value = None
+        if self.val_list:
+            # Assuming value list are all int
+            sel = random.choice(self.val_list)
+            try:
+                self.value = datetime.datetime.strptime(sel, "%H:%M:%S:%f %d-%m-%Y")
+            except:
+                print "Incorrect datetime format in field:", self.name
+                raise BaseException()
+        elif self.val_range:
+            try:
+                val1 = datetime.datetime.strptime(self.val_range[0], "%H:%M:%S:%f %d-%m-%Y")
+                val2 = datetime.datetime.strptime(self.val_range[1], "%H:%M:%S:%f %d-%m-%Y")
+            except:
+                print "Incorrect datetime format in field:", self.name
+                raise BaseException()
+
+            if val1 > val2 :
+                print "First date is newer than second date in value_range of field:", self.name
+                raise BaseException()
+
+            dt = datetime.datetime(1,1,1)
+            dt.hour = random.randint(val1.hour, val2.hour)
+            dt.min = random.randint(val1.min, val2.min)
+            dt.second = random.randint(val1.second, val2.second)
+            dt.microsecond = random.randint(val1.microsecond, val2.microsecond)//10000
+            dt.day = random.randint(val1.day, val2.day)
+            dt.month = random.randint(val1.month, val2.month)
+            dt.year = random.randint(val1.year, val2.year)
+            self.value = dt
+        else:
+            dt = datetime.datetime(1,1,1)
+            dt.hour = random.randint(0, 23)
+            dt.min = random.randint(0, 59)
+            dt.second = random.randint(0, 59)
+            dt.microsecond = random.randint(0, 99)//10000
+            dt.day = random.randint(0, 31)
+            dt.month = random.randint(0, 12)
+            dt.year = random.randint(1900, 2029)
+            self.value = dt
+
+        if self.value == None:
+            print "Warning: No Field Generated in "+self.name
+
+    def __str__(self):
+        if not self.value:
+            return "<None>"
+        else:
+            ret = self.value.strftime("%H:%M:%S:%%d %d-%m-%Y")
+            return ret % (self.value.microsecond//10000)
+
+class Time64Field(Field):
+    def __init__(self, size, *args, **kwds):
+        Field.__init__(self, *args, **kwds)
+    
+    def generate_val(self):
+        self.value = None
+        if self.val_list:
+            # Assuming value list are all int
+            sel = random.choice(self.val_list)
+            if isinstance( sel, ( int, long ) ):
+                self.value = sel
+            else:
+                print "Incorrect time tick format in field:", self.name
+                raise BaseException()
+
+        elif self.val_range:
+            val1 = self.val_range[0]
+            val2 = self.val_range[1]
+            
+            if val1 > val2 :
+                print "First tick is newer than second tick in value_range of field:", self.name
+                raise BaseException()
+            
+            if isinstance( val1, ( int, long ) ) and isinstance( val2, ( int, long ) ):
+                self.value = random.randint(val1, val2)
+            else:
+                print "Incorrect time tick format in field:", self.name
+                raise BaseException()
+
+        else:
+            self.value = random.randint(0, 18446744073709552000)
+
+        if self.value == None:
+            print "Warning: No Field Generated in "+self.name
+
+    def __str__(self):
+        if not self.value:
+            return "<None>"
+        else:
+            return str(self.value)
 
 
 def get_field_object(field):
     type = field['type']
     ret = None
-
+    
+    # Variable size fields
     if type == "BCD":
-        pass
+        ret = BCDField(size=field['size'], name=field.get('name'), val_list=field.get('values'), val_range=field.get('value_range'))
     elif type == "BCD8":
-        pass
+        ret = BCD8Field(size=field['size'], name=field.get('name'), val_list=field.get('values'), val_range=field.get('value_range'))
     elif type == "BIN":
         pass
     elif type == "CHAR":
         ret = CharField(size=field['size'], name=field.get('name'), val_list=field.get('values'))
     
+    # Fixed Size Fields
     elif type == "BCDTIMESTAMP":
-        pass
+        ret = BCDDateTimeField(name=field.get('name'), val_list=field.get('values'), val_range=field.get('value_range'))
     elif type == "IPADDR":
         pass
     elif type == "TIME64":
-        pass
+        ret = Time64Field(name=field.get('name'), val_list=field.get('values'), val_range=field.get('value_range'))
     elif type == "UINT8":
         ret = Uint8Field(name=field.get('name'), val_list=field.get('values'), val_range=field.get('value_range'))
     elif type == "UINT16":

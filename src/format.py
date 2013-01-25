@@ -1,4 +1,4 @@
-import sys, random, string
+import sys, random, string, re
 import simplejson as json
 from ordereddict import OrderedDict
 from pprint import pprint
@@ -25,9 +25,13 @@ class CSV(Format):
             return ret
 
         for item in record:
-           ret += item.__str__()
-           ret += self.delimeter
-
+            str = item.__str__() 
+            str = str.replace('"','\\"')
+            ret += "\""
+            ret += str
+            ret += "\""
+            ret += self.delimeter
+            
         return ret
 
 def format_init():
