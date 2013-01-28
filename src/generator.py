@@ -50,7 +50,12 @@ class CharField(Field):
         if (not self.value):
             return "<None>"
         else:
-            return self.value
+            str = self.value.replace('"','\\"')
+            ret = "\""
+            ret += str
+            ret += "\""
+ 
+            return ret
 
 class Uint8Field(Field):
     def __init__(self, *args, **kwds):
@@ -199,7 +204,7 @@ class BCD8Field(Field):
             return str(self.value)
 
 class BCDDateTimeField(Field):
-    def __init__(self, size, *args, **kwds):
+    def __init__(self, *args, **kwds):
         Field.__init__(self, *args, **kwds)
     
     def generate_val(self):
@@ -225,23 +230,52 @@ class BCDDateTimeField(Field):
                 raise BaseException()
 
             dt = datetime.datetime(1,1,1)
-            dt.hour = random.randint(val1.hour, val2.hour)
-            dt.min = random.randint(val1.min, val2.min)
-            dt.second = random.randint(val1.second, val2.second)
-            dt.microsecond = random.randint(val1.microsecond, val2.microsecond)//10000
-            dt.day = random.randint(val1.day, val2.day)
-            dt.month = random.randint(val1.month, val2.month)
-            dt.year = random.randint(val1.year, val2.year)
+            if (val1.hour != val2.hour):
+                dt = dt.replace(hour=random.randint(val1.hour, val2.hour))
+            else:
+                dt = dt.replace(hour=val1.hour)
+
+            if (val1.min != val2.min):
+                dt = dt.replace(minute=random.randint(val1.minute, val2.minute))
+            else:
+                print val1.min
+                dt = dt.replace(minute=val1.minute)
+
+            if (val1.second != val2.second):
+                dt = dt.replace(second=random.randint(val1.second, val2.second))
+            else:
+                dt = dt.replace(second=val1.second)
+
+            if (val1.microsecond != val2.microsecond):
+                dt = dt.replace(microsecond=random.randint(val1.microsecond, val2.microsecond)//10000)
+            else:
+                dt = dt.replace(microsecond=val1.microsecond)
+
+            if (val1.day != val2.day):
+                dt = dt.replace(day=random.randint(val1.day, val2.day))
+            else:
+                dt = dt.replace(day=val1.day)
+
+            if (val1.month != val2.month):
+                dt = dt.replace(month=random.randint(val1.month, val2.month))
+            else:
+                dt = dt.replace(month=val1.month)
+
+            if (val1.year != val2.year):
+                dt = dt.replace(year=random.randint(val1.year, val2.year))
+            else:
+                dt = dt.replace(year=val1.year)
+
             self.value = dt
         else:
             dt = datetime.datetime(1,1,1)
-            dt.hour = random.randint(0, 23)
-            dt.min = random.randint(0, 59)
-            dt.second = random.randint(0, 59)
-            dt.microsecond = random.randint(0, 99)//10000
-            dt.day = random.randint(0, 31)
-            dt.month = random.randint(0, 12)
-            dt.year = random.randint(1900, 2029)
+            dt = dt.replace(hour=random.randint(0, 23))
+            dt = dt.replace(minute=random.randint(0, 59))
+            dt = dt.replace(second=random.randint(0, 59))
+            dt = dt.replace(microsecond=random.randint(0, 99)//10000)
+            dt = dt.replace(day=random.randint(1, 28))
+            dt = dt.replace(month=random.randint(1, 12))
+            dt = dt.replace(year=random.randint(1900, 2029))
             self.value = dt
 
         if self.value == None:
@@ -251,8 +285,15 @@ class BCDDateTimeField(Field):
         if not self.value:
             return "<None>"
         else:
-            ret = self.value.strftime("%H:%M:%S:%%d %d-%m-%Y")
-            return ret % (self.value.microsecond//10000)
+
+            str = self.value.strftime("%H:%M:%S:%%d %d-%m-%Y")
+            str  = str % (self.value.microsecond//10000)
+            str = str.replace('"','\\"')
+
+            ret = "\""
+            ret += str
+            ret += "\""
+            return ret
 
 class Time64Field(Field):
     def __init__(self, size, *args, **kwds):

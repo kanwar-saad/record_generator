@@ -44,7 +44,27 @@
             "type" : "CHAR(10)",
             "Explanation" : "First 1xx status code.  ",
             "values" : ["hello", "hi"]
-        } 
+        },
+        "datetime_test" : 
+        {
+            "name" : "Test_field",
+            "type" : "BCDTIMESTAMP",
+            "Explanation" : "First 1xx status code.  "
+        }, 
+        "datetime_test2" : 
+        {
+            "name" : "Test_field",
+            "type" : "BCDTIMESTAMP",
+            "Explanation" : "First 1xx status code.  ",
+            "values" : ["21:22:23:24 01-02-1999", "21:22:23:24 01-02-2000", "21:22:23:24 02-03-1999", "21:22:23:24 03-04-1999" ]
+        },
+        "datetime_test3" : 
+        {
+            "name" : "Test_field",
+            "type" : "BCDTIMESTAMP",
+            "Explanation" : "First 1xx status code.  ",
+            "value_range" : ["21:22:23:24 01-02-1999", "21:22:23:24 01-02-2005" ]
+        }
     } 
 }
 

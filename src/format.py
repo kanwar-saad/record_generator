@@ -25,11 +25,7 @@ class CSV(Format):
             return ret
 
         for item in record:
-            str = item.__str__() 
-            str = str.replace('"','\\"')
-            ret += "\""
-            ret += str
-            ret += "\""
+            ret += item.__str__() 
             ret += self.delimeter
             
         return ret
