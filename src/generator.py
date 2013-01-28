@@ -2,6 +2,7 @@ import sys, random, string, datetime
 import simplejson as json
 from ordereddict import OrderedDict
 from pprint import pprint
+from IPy import IP
 import globals
 
 
@@ -238,7 +239,6 @@ class BCDDateTimeField(Field):
             if (val1.min != val2.min):
                 dt = dt.replace(minute=random.randint(val1.minute, val2.minute))
             else:
-                print val1.min
                 dt = dt.replace(minute=val1.minute)
 
             if (val1.second != val2.second):
@@ -296,7 +296,7 @@ class BCDDateTimeField(Field):
             return ret
 
 class Time64Field(Field):
-    def __init__(self, size, *args, **kwds):
+    def __init__(self, *args, **kwds):
         Field.__init__(self, *args, **kwds)
     
     def generate_val(self):
@@ -337,6 +337,53 @@ class Time64Field(Field):
             return str(self.value)
 
 
+class IPv4Field(Field):
+    def __init__(self, *args, **kwds):
+        Field.__init__(self, *args, **kwds)
+    
+    def get_valid_ip(self, ip_str):
+        try:
+            ip_raw = IP(ip_str)
+        except:
+            return None
+        #filter address to get only ip, subnet masks will be ignored
+        return ip_raw.strNormal(0)
+
+    def generate_val(self):
+        self.value = None
+        if self.val_list:
+            
+            sel = random.choice(self.val_list)
+            #validate selected ip address
+            ip = self.get_valid_ip(sel)
+            if not ip:
+                print "Invalid IP address in value list of field :", self.name
+                raise BaseException()
+            self.value = IP(ip)
+
+        elif self.val_range:
+            ip1 = self.get_valid_ip(self.val_range[0])
+            ip2 = self.get_valid_ip(self.val_range[1])
+            
+            if (not ip1) or (not ip2):
+                print "Invalid IP address in value range of field :", self.name
+                raise BaseException()
+            if (IP(ip1) > IP(ip2)):
+                print "Invalid IP adress range in field :", self.name, " L-Value is larger than R-Value"
+                raise BaseException()
+            self.value = IP(random.randint(IP(ip1).int(), IP(ip2).int()))
+
+        else:
+            self.value = IP(random.randint(0, 0xffffffff))
+
+
+    def __str__(self):
+        if not self.value:
+            return "<None>"
+        else:
+            return self.value.strNormal(0)
+
+
 def get_field_object(field):
     type = field['type']
     ret = None
@@ -355,6 +402,7 @@ def get_field_object(field):
     elif type == "BCDTIMESTAMP":
         ret = BCDDateTimeField(name=field.get('name'), val_list=field.get('values'), val_range=field.get('value_range'))
     elif type == "IPADDR":
+        ret = IPv4Field(name=field.get('name'), val_list=field.get('values'), val_range=field.get('value_range'))
         pass
     elif type == "TIME64":
         ret = Time64Field(name=field.get('name'), val_list=field.get('values'), val_range=field.get('value_range'))

@@ -62,9 +62,26 @@
         {
             "name" : "Test_field",
             "type" : "BCDTIMESTAMP",
-            "Explanation" : "First 1xx status code.  ",
             "value_range" : ["21:22:23:24 01-02-1999", "21:22:23:24 01-02-2005" ]
+        },
+        "ip_test1" : 
+        {
+            "name" : "Test_field",
+            "type" : "IPADDR",
+            "value_range" : ["127.0.0.1", "127.0.1.200" ]
+        },
+        "ip_test2" : 
+        {
+            "name" : "Test_field",
+            "type" : "IPADDR",
+            "values" : ["1.2.3.4","2.3.4.5","11.22.33.44","12.13.14.15" ]
+        },
+        "ip_test3" : 
+        {
+            "name" : "Test_field",
+            "type" : "IPADDR"
         }
+ 
     } 
 }
 

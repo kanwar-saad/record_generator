@@ -1,4 +1,4 @@
-- Simplae JSON
+- Simple JSON
 
     sudo pip install simplejson
 
@@ -8,3 +8,8 @@
     tar zxvf ordereddict-1.1.tar.gz
     cd ordereddict-1.1
     sudo python setup.py install
+
+
+- IPy
+
+    sudo pip install ipy

@@ -7,14 +7,14 @@
         {
             "test_schema" : 
             {
-                "output_rate" : 4,
-                "number_of_records" : 15,
+                "output_rate" : 20,
+                "number_of_records" : 25,
                 "schema_path" : "../schema/test.sch"
             },
             "test_schema2" : 
             {
                 "output_rate" : 10,
-                "number_of_records" : 35,
+                "number_of_records" : 20,
                 "schema_path" : "../schema/test2.sch"
             }
 
